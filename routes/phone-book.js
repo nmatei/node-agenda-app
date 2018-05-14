@@ -38,4 +38,24 @@ router.post('/add', function(req, res, next) {
 
 });
 
+router.post('/delete', function(req, res, next) {
+    // read
+    const fs = require('fs');
+
+    let rawdata = fs.readFileSync('phone-book.json');
+    let persons = JSON.parse(rawdata);
+
+    const id = parseInt(req.body.id);
+
+    persons = persons.filter(function(person) {
+        return person.id !== id;
+    });
+
+    // save
+    let data = JSON.stringify(persons, null, 2);
+    fs.writeFileSync('phone-book.json', data);
+
+    res.json(persons);
+});
+
 module.exports = router;

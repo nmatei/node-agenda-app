@@ -4,7 +4,7 @@ function getRow(person) {
         "<td>" + person.lastName + "</td>" +
         "<td>" + person.phone + "</td>" +
         `<td>` +
-            `<a href='tmp/remove-contact.html?id=${person.id}'>&#10006;</a> ` +
+            `<a href='#' data-id='${person.id}' class='delete'>&#10006;</a> ` +
             `<a href='#' data-id='${person.id}' class='edit'>&#9998;</a>` +
         `</td>` +
         "</tr>";
@@ -21,6 +21,18 @@ $.ajax({
     display(persons);
 });
 
+function deleteContact(id) {
+    $.ajax({
+        url: '/phone-book/delete',
+        method: "POST",
+        data: {
+            id: id
+        }
+    }).done(function (persons) {
+        display(persons);
+    });
+}
+
 function display(persons) {
     var rows = '';
 
@@ -34,8 +46,6 @@ function display(persons) {
     //     rows += getRow(person);
     // });
     persons.forEach(person => rows += getRow(person));
-
-    console.info(rows);
 
     rows += '<tr>' +
         '<td><input type="text" required name="firstName" placeholder="Enter first name"></td>' +
@@ -62,4 +72,12 @@ function display(persons) {
         $('input[name=lastName]').val(editPerson.lastName);
         $('input[name=phone]').val(editPerson.phone);
     });
+
+    $('#phone-book tbody a.delete').click(function () {
+        var id = $(this).data('id');
+        console.info('click on ', this, id);
+
+        deleteContact(id);
+    });
 }
+
