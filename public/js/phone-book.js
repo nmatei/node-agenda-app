@@ -44,30 +44,30 @@ function saveContact(person) {
     });
 }
 
-function display(persons) {
-    var rows = '';
-
-    persons.forEach(person => rows += getRow(person));
-
-    rows += '<tr>' +
+function getActionRow() {
+    return '<tr>' +
         '<td><input type="text" required name="firstName" placeholder="Enter first name"></td>' +
         '<td><input type="text" name="lastName" placeholder="Enter last name"></td>' +
         '<td><input type="text" required name="phone" placeholder="Enter phone"></td>' +
         '<td><button type="submit">Save</button></td>' +
         '</tr>';
+}
 
+function display(persons) {
+    var rows = '';
+
+    persons.forEach(person => rows += getRow(person));
+    rows += getActionRow();
     $('#phone-book tbody').html(rows);
 
     $('#phone-book tbody a.edit').click(function () {
         var id = $(this).data('id');
-
         editContact(id, persons);
     });
 
     $('#phone-book tbody a.delete').click(function () {
         var id = $(this).data('id');
         console.info('click on ', this, id);
-
         deleteContact(id);
     });
 }
