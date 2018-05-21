@@ -53,13 +53,7 @@ function getActionRow() {
         '</tr>';
 }
 
-function display(persons) {
-    var rows = '';
-
-    persons.forEach(person => rows += getRow(person));
-    rows += getActionRow();
-    $('#phone-book tbody').html(rows);
-
+function bindEvents(persons) {
     $('#phone-book tbody a.edit').click(function () {
         var id = $(this).data('id');
         editContact(id, persons);
@@ -70,6 +64,16 @@ function display(persons) {
         console.info('click on ', this, id);
         deleteContact(id);
     });
+}
+
+function display(persons) {
+    var rows = '';
+
+    persons.forEach(person => rows += getRow(person));
+    rows += getActionRow();
+    $('#phone-book tbody').html(rows);
+
+    bindEvents(persons);
 }
 
 function editContact(id, persons) {
