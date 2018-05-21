@@ -21,7 +21,7 @@ function getActionRow() {
 
 function loadContacts() {
     $.ajax({
-        url: '/phone-book',
+        url: '/agenda',
         method: "GET"
     }).done(function (persons) {
         console.info('done:', persons);
