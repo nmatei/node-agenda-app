@@ -31,23 +31,27 @@ function loadContacts() {
 
 function deleteContact(id) {
     $.ajax({
-        url: '/phone-book/delete',
+        url: '/agenda/delete',
         method: "POST",
         data: {
             id: id
         }
-    }).done(function (persons) {
-        display(persons);
+    }).done(function (response) {
+        if (response.success) {
+            loadContacts();
+        }
     });
 }
 
 function saveContact(person) {
     $.ajax({
-        url: '/phone-book/update',
+        url: '/agenda/update',
         method: "POST",
         data: person
-    }).done(function (persons) {
-        display(persons);
+    }).done(function (response) {
+        if (response.success) {
+            loadContacts();
+        }
     });
 }
 
