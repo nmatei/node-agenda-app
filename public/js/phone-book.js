@@ -1,3 +1,5 @@
+var editId;
+
 function getRow(person) {
     return "<tr>" +
         "<td>" + person.firstName + "</td>" +
@@ -43,6 +45,18 @@ function deleteContact(id) {
     });
 }
 
+function addContact(person) {
+    $.ajax({
+        url: '/agenda/add',
+        method: "POST",
+        data: person
+    }).done(function (response) {
+        if (response.success) {
+            loadContacts();
+        }
+    });
+}
+
 function saveContact(person) {
     $.ajax({
         url: '/agenda/update',
@@ -50,6 +64,7 @@ function saveContact(person) {
         data: person
     }).done(function (response) {
         if (response.success) {
+            editId = '';
             loadContacts();
         }
     });
@@ -65,6 +80,21 @@ function bindEvents() {
         var id = $(this).data('id');
         console.info('click on ', this, id);
         deleteContact(id);
+    });
+
+    $( ".add-form" ).submit(function() {
+        const person = {
+            firstName: $('input[name=firstName]').val(),
+            lastName: $('input[name=lastName]').val(),
+            phone: $('input[name=phone]').val()
+        };
+
+        if (editId) {
+            person.id = editId;
+            saveContact(person);
+        } else {
+            addContact(person);
+        }
     });
 }
 
@@ -84,22 +114,20 @@ function editContact(id) {
     });
     console.warn('edit', editPerson);
 
+    if (editId) {
+        $('#phone-book tbody tr:last-child() td:last-child()').append(`<button onclick="cancelEdit(this)">Cancel</button>`);
+    }
+
     $('input[name=firstName]').val(editPerson.firstName);
     $('input[name=lastName]').val(editPerson.lastName);
     $('input[name=phone]').val(editPerson.phone);
+    editId = id;
+}
 
-    $( ".add-form" ).submit(function( event ) {
-        event.preventDefault();
-
-        const person = {
-            id: id,
-            firstName: $('input[name=firstName]').val(),
-            lastName: $('input[name=lastName]').val(),
-            phone: $('input[name=phone]').val()
-        };
-
-        saveContact(person);
-    });
+function cancelEdit(button) {
+    $( ".add-form" ).get(0).reset();
+    editId = '';
+    button.parentNode.removeChild(button);
 }
 
 var persons = [];

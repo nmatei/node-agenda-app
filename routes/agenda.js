@@ -35,11 +35,7 @@ router.post('/add', function(req, res, next) {
             if (err) throw err;
             console.log(sql);
             console.log(result);
-            //res.json({success: true});
-            res.writeHead(301,
-                {Location: '/phone-book.html'}
-            );
-            res.end();
+            res.json({success: true});
         });
     });
 });
