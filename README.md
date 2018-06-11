@@ -26,6 +26,10 @@ npm install --save-dev nodemon
 ```
 
 ```
+npm install cors --save
+```
+
+```
 npm install
 ```
 

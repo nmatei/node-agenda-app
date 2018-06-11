@@ -1,5 +1,13 @@
 var editId;
 
+// for external API USE http://nick:3000/agenda
+const API_URL = {
+    CREATE: '/agenda/add',
+    READ: '/agenda',
+    UPDATE: '/agenda/update',
+    DELETE: '/agenda/delete'
+};
+
 function getRow(person) {
     return "<tr>" +
         "<td>" + person.firstName + "</td>" +
@@ -23,7 +31,7 @@ function getActionRow() {
 
 function loadContacts() {
     $.ajax({
-        url: '/agenda',
+        url: API_URL.READ,
         method: "GET"
     }).done(function (persons) {
         console.info('done:', persons);
@@ -33,7 +41,7 @@ function loadContacts() {
 
 function deleteContact(id) {
     $.ajax({
-        url: '/agenda/delete',
+        url: API_URL.DELETE,
         method: "POST",
         data: {
             id: id
@@ -47,7 +55,7 @@ function deleteContact(id) {
 
 function addContact(person) {
     $.ajax({
-        url: '/agenda/add',
+        url: API_URL.CREATE,
         method: "POST",
         data: person
     }).done(function (response) {
@@ -59,7 +67,7 @@ function addContact(person) {
 
 function saveContact(person) {
     $.ajax({
-        url: '/agenda/update',
+        url: API_URL.UPDATE,
         method: "POST",
         data: person
     }).done(function (response) {
