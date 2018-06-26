@@ -27,7 +27,7 @@ window.PhoneBook = {
             method: "GET"
         }).done(function (persons) {
             console.info('done:', persons);
-            display(persons);
+            PhoneBook.display(persons);
         });
     },
 
@@ -105,40 +105,40 @@ window.PhoneBook = {
                 PhoneBook.add(person);
             }
         });
+    },
+
+    edit: function (id) {
+        var editPerson = persons.find(function (person) {
+            console.log(person.firstName);
+            return person.id == id;
+        });
+        console.warn('edit', editPerson);
+
+        if (editId) {
+            $('#phone-book tbody tr:last-child() td:last-child()').append(`<button onclick="PhoneBook.cancelEdit(this)">Cancel</button>`);
+        }
+
+        $('input[name=firstName]').val(editPerson.firstName);
+        $('input[name=lastName]').val(editPerson.lastName);
+        $('input[name=phone]').val(editPerson.phone);
+        editId = id;
+    },
+
+    cancelEdit: function(button) {
+        $( ".add-form" ).get(0).reset();
+        editId = '';
+        button.parentNode.removeChild(button);
+    },
+
+    display: function(persons) {
+        window.persons = persons;
+        var rows = '';
+
+        persons.forEach(person => rows += PhoneBook.getRow(person));
+        rows += PhoneBook.getActionRow();
+        $('#phone-book tbody').html(rows);
     }
 };
-
-function display(persons) {
-    window.persons = persons;
-    var rows = '';
-
-    persons.forEach(person => rows += PhoneBook.getRow(person));
-    rows += PhoneBook.getActionRow();
-    $('#phone-book tbody').html(rows);
-}
-
-function editContact(id) {
-    var editPerson = persons.find(function (person) {
-        console.log(person.firstName);
-        return person.id == id;
-    });
-    console.warn('edit', editPerson);
-
-    if (editId) {
-        $('#phone-book tbody tr:last-child() td:last-child()').append(`<button onclick="cancelEdit(this)">Cancel</button>`);
-    }
-
-    $('input[name=firstName]').val(editPerson.firstName);
-    $('input[name=lastName]').val(editPerson.lastName);
-    $('input[name=phone]').val(editPerson.phone);
-    editId = id;
-}
-
-function cancelEdit(button) {
-    $( ".add-form" ).get(0).reset();
-    editId = '';
-    button.parentNode.removeChild(button);
-}
 
 var persons = [];
 console.info('loading persons');
