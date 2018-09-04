@@ -12,7 +12,7 @@ const pool = mysql.createPool({
 router.get('/', function(req, res, next) {
     pool.getConnection(function(err, connection) {
         if (err) throw err;
-        connection.query("SELECT * FROM phone_book", function (err, result, fields) {
+        connection.query("SELECT * FROM warranties", function (err, result, fields) {
             connection.release();
             if (err) throw err;
             console.log(result);
@@ -25,11 +25,12 @@ router.post('/add', function(req, res, next) {
     pool.getConnection(function(err, connection) {
         if (err) throw err;
 
-        const firstName = req.body.firstName;
-        const lastName = req.body.lastName;
-        const phone = req.body.phone;
+        const name = req.body.name;
+        const serialNumber = req.body.serialNumber;
+        const acquisitionDate = req.body.acquisitionDate;
+        const warrantyMonths = req.body.warrantyMonths;
 
-        let sql = `INSERT INTO phone_book (firstName, lastName, phone) VALUES ('${firstName}', '${lastName}', '${phone}')`;
+        let sql = `INSERT INTO warranties (name, serialNumber, acquisitionDate, warrantyMonths) VALUES ('${name}', '${serialNumber}', '${acquisitionDate}', ${warrantyMonths})`;
         connection.query(sql, function (err, result, fields) {
             connection.release();
             if (err) throw err;
@@ -46,7 +47,7 @@ router.post('/delete', function(req, res, next) {
 
         const id = parseInt(req.body.id);
 
-        let sql = `DELETE FROM phone_book WHERE id = ${id}`;
+        let sql = `DELETE FROM warranties WHERE id = ${id}`;
         connection.query(sql, function (err, result, fields) {
             connection.release();
             if (err) throw err;
@@ -62,11 +63,12 @@ router.post('/update', function(req, res, next) {
         if (err) throw err;
 
         const id = parseInt(req.body.id);
-        const firstName = req.body.firstName;
-        const lastName = req.body.lastName;
-        const phone = req.body.phone;
+        const name = req.body.name;
+        const serialNumber = req.body.serialNumber;
+        const acquisitionDate = req.body.acquisitionDate;
+        const warrantyMonths = req.body.warrantyMonths;
 
-        let sql = `UPDATE phone_book SET firstName = '${firstName}', lastName = '${lastName}', phone = '${phone}' WHERE id = ${id}`;
+        let sql = `UPDATE warranties SET name = '${name}', serialNumber = '${serialNumber}', acquisitionDate = '${acquisitionDate}', warrantyMonths = ${warrantyMonths} WHERE id = ${id}`;
         connection.query(sql, function (err, result, fields) {
             connection.release();
             if (err) throw err;

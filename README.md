@@ -1,4 +1,4 @@
-# Phone Book app & Node as server side
+# Warranties app & Node as server side
 
 A simple app using node & express for managing phone books
 
