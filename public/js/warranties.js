@@ -113,9 +113,8 @@ window.WarrantyList = {
     },
 
     edit: function (id) {
-        var editProduct = warranties.find(function (warranty) {
-            console.log(warranty.firstName);
-            return warranty.id == id;
+        var editProduct = products.find(function (product) {
+            return product.id == id;
         });
         console.warn('edit', editProduct);
 
