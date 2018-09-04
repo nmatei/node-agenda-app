@@ -40,7 +40,7 @@ window.WarrantyList = {
             '<td><input type="text" required name="serialNumber" placeholder="Seria Produsului"></td>' +
             '<td><input type="date" required name="acquisitionDate" placeholder="Data garantiei"></td>' +
             '<td><input type="text" required name="warrantyMonths" placeholder="durata garantiei (luni)"></td>' +
-            '<td><button type="submit">Adauga</button></td>' +
+            '<td><button type="submit">Salvează</button></td>' +
             '</tr>';
     },
 
