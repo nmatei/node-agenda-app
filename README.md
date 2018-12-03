@@ -11,25 +11,10 @@ A simple app using node & express for managing phone books
 
 ```
 npm install express-generator -g
-```
-
-```
 express --view=hbs node-agenda-app
-```
-
-```
 cd node-agenda-app
-```
-
-```
 npm install --save-dev nodemon
-```
-
-```
 npm install cors --save
-```
-
-```
 npm install
 ```
 
