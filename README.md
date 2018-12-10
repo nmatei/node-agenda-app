@@ -41,3 +41,5 @@ or simple (also on dev mode)
 ```
 nodemon
 ```
+
+open [http://localhost:3000/](http://localhost:3000/)
