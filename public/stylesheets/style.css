@@ -1,8 +1,19 @@
 body {
-  padding: 50px;
+  padding: 10px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 
 a {
   color: #00B7FF;
+}
+
+#agenda {
+  width: 100%;
+}
+#agenda td {
+  padding: 4px;
+}
+
+#agenda input {
+  width: 100%;
 }
