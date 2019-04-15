@@ -1,17 +1,17 @@
 [
-    {
-        "firstName": "Nicolae",
-        "lastName": "Matei",
-        "phone": "12345678"
-    }, 
-    {
-        "firstName": "Andrei",
-        "lastName": "Ille",
-        "phone": "12345670"
-    },
-    {
-        "firstName": "Razvan",
-        "lastName": "Mitrea",
-        "phone": "12344651"
-    }
+  {
+    "firstName": "Nicolae",
+    "lastName": "Matei",
+    "phone": "12345678"
+  },
+  {
+    "firstName": "Andrei",
+    "lastName": "Ille",
+    "phone": "12345670"
+  },
+  {
+    "firstName": "Razvan",
+    "lastName": "Mitrea",
+    "phone": "12344651"
+  }
 ]
