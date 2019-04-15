@@ -1,5 +1,14 @@
 var allPersons = [];
 
+var API_URL = {
+    //ADD: 'data/add.json'
+    ADD: 'users/add'
+};
+var API_METHOD = {
+    //ADD: 'GET'
+    ADD: 'POST'
+}
+
 fetch('data/persons.json').then(function(r){
     return r.json();
 }).then(function(persons) {
@@ -31,14 +40,19 @@ function savePerson() {
 
 function submitNewPerson(firstName, lastName, phone) {
     var body = null;
-    // body = JSON.stringify({
-    //     firstName: firstName,
-    //     lastName: lastName,
-    //     person: phone
-    // });
-    fetch('data/add.json', {
-        method: 'GET',
-        body: body
+    if (API_METHOD.ADD === 'POST') {
+        body = JSON.stringify({
+            firstName: firstName,
+            lastName: lastName,
+            phone: phone
+        });
+    }
+    fetch(API_URL.ADD, {
+        method: API_METHOD.ADD,
+        body: body,
+        headers: {
+            "Content-Type": "application/json"
+        }
     }).then(function(r) {
         return r.json();
     }).then(function(status) {
