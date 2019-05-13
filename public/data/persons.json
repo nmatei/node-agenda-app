@@ -7,7 +7,7 @@
   },
   {
     "id": 2,
-    "firstName": "Andrei",
+    "firstName": "Andrei Vasile",
     "lastName": "Ille",
     "phone": "12345670"
   },
@@ -25,14 +25,8 @@
   },
   {
     "id": 1557167008986,
-    "firstName": "new",
-    "lastName": "pers",
-    "phone": "321"
-  },
-  {
-    "id": 1557167192002,
-    "firstName": "yes",
-    "lastName": "you",
-    "phone": "123"
+    "firstName": "Zsombor",
+    "lastName": "Varga",
+    "phone": "076544475"
   }
 ]
