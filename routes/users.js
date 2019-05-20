@@ -46,10 +46,6 @@ router.put('/update', function(req, res, next) {
   
   var persons = require('../public/data/persons.json');
   
-  // update...
-  // const person = persons.find(function(p){
-  //   return p.id == id;
-  // });
   const person = persons.find((p) => {
     return p.id == id;
   });
