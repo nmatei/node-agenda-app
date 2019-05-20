@@ -139,7 +139,6 @@ function inlineEditPerson(id, firstName, lastName, phone) {
 }
 
 function inlineDeletePerson(id) {
-    console.warn('please refresh :)', id);
     allPersons = allPersons.filter(function(person) {
         return person.id != id;
     });
