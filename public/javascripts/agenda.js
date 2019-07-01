@@ -1,4 +1,3 @@
-var allPersons = [];
 var editPersonId;
 
 var API_URL = {
@@ -18,41 +17,71 @@ var API_METHOD = {
     DELETE: 'DELETE'
 }
 
+const Persons = {
+    list: [],
+
+    display: function(persons){
+        var list = persons.map(function(person) {
+            return `<tr data-id="${person.id}">
+                <td>${person.firstName}</td>
+                <td>${person.lastName}</td>
+                <td>${person.phone}</td>
+                <td>
+                    <a href="#" class="delete">&#10006;</a>
+                    <a href="#" class="edit">&#9998;</a>
+                </td>
+            </tr>`;
+        });
+    
+        document.querySelector('#agenda tbody').innerHTML = list.join('');
+    },
+
+    save: function() {
+        var firstName = document.querySelector('[name=firstName]').value;
+        var lastName = document.querySelector('[name=lastName]').value;
+        var phone = document.querySelector('[name=phone]').value;
+        
+        if (editPersonId) {
+            submitEditPerson(editPersonId, firstName, lastName, phone);
+        } else {
+            submitNewPerson(firstName, lastName, phone);
+        }
+    }, 
+
+    inlineAdd: function (id, firstName, lastName, phone) {
+        this.list.push({
+            id,
+            firstName,
+            lastName,
+            phone
+        });
+        this.display(this.list);
+    },
+
+    inlineDelete: function(id) {
+        this.list = this.list.filter(function(element) {
+            return element.id != id;
+        });
+        this.display(this.list);
+    },
+
+    search: function(value) {
+        value = value.toLowerCase().trim();
+        const filtered = this.list.filter(person => {
+            return person.firstName.toLowerCase().includes(value) || 
+                person.lastName.toLowerCase().includes(value) ||
+                person.phone.toLowerCase().includes(value)
+        });
+        this.display(filtered);
+    }
+};
+
 fetch(API_URL.READ).then(function(r){
     return r.json();
 }).then(function(persons) {
-    console.log('all persons', persons);
-    allPersons = persons;
-    display(persons);
+    Persons.list = persons;
+    Persons.display(persons);
 });
-
-function display(persons) {
-    var list = persons.map(function(person) {
-        return `<tr data-id="${person.id}">
-            <td>${person.firstName}</td>
-            <td>${person.lastName}</td>
-            <td>${person.phone}</td>
-            <td>
-                <a href="#" class="delete">&#10006;</a>
-                <a href="#" class="edit">&#9998;</a>
-            </td>
-        </tr>`;
-    });
-
-    document.querySelector('#agenda tbody').innerHTML = list.join('');
-}
-
-function savePerson() {
-    var firstName = document.querySelector('[name=firstName]').value;
-    var lastName = document.querySelector('[name=lastName]').value;
-    var phone = document.querySelector('[name=phone]').value;
-    
-    if (editPersonId) {
-        submitEditPerson(editPersonId, firstName, lastName, phone);
-    } else {
-        submitNewPerson(firstName, lastName, phone);
-    }
-}
 
 function submitNewPerson(firstName, lastName, phone) {
     var body = null;
@@ -74,7 +103,7 @@ function submitNewPerson(firstName, lastName, phone) {
         return r.json();
     }).then(function(status) {
         if (status.success) {
-            inlineAddPerson(status.id, firstName, lastName, phone);
+            Persons.inlineAdd(status.id, firstName, lastName, phone);
         } else {
             console.warn('not saved!', status);
         }
@@ -109,40 +138,22 @@ function submitEditPerson(id, firstName, lastName, phone) {
     })
 }
 
-
-function inlineAddPerson(id, firstName, lastName, phone) {
-    allPersons.push({
-        id,
-        firstName,
-        lastName,
-        phone
-    });
-    display(allPersons);
-}
-
 function inlineEditPerson(id, firstName, lastName, phone) {
     //window.location.reload();
     
-    const person = allPersons.find((p) => {
+    const person = Persons.list.find((p) => {
         return p.id == id;
     });
     person.firstName = firstName;
     person.lastName = lastName;
     person.phone = phone;
     
-    display(allPersons);
+    Persons.display(Persons.list);
 
     editPersonId = '';
     document.querySelector('[name=firstName]').value = '';
     document.querySelector('[name=lastName]').value = '';
     document.querySelector('[name=phone]').value = '';
-}
-
-function inlineDeletePerson(id) {
-    allPersons = allPersons.filter(function(person) {
-        return person.id != id;
-    });
-    display(allPersons);
 }
 
 function deletePerson(id) {
@@ -160,7 +171,7 @@ function deletePerson(id) {
         return r.json();
     }).then(function(status) {
         if (status.success) {
-            inlineDeletePerson(id);
+            Persons.inlineDelete(id);
         } else {
             console.warn('not removed!', status);
         }
@@ -168,7 +179,7 @@ function deletePerson(id) {
 }
 
 const editPerson = function(id) {
-    var person = allPersons.find(function(p) {
+    var person = Persons.list.find(function(p) {
         return p.id == id
     });
     document.querySelector('[name=firstName]').value = person.firstName;
@@ -176,18 +187,6 @@ const editPerson = function(id) {
     document.querySelector('[name=phone]').value = person.phone;
     editPersonId = id;
 }
-
-// if one parameter can skipp pharantesis 
-// "(value)" will be "value"
-const search = value => {
-    value = value.toLowerCase().trim();
-    const filtered = allPersons.filter(person => {
-        return person.firstName.toLowerCase().includes(value) || 
-            person.lastName.toLowerCase().includes(value) ||
-            person.phone.toLowerCase().includes(value)
-    });
-    display(filtered);
-};
 
 function initEvents() {
     const tbody = document.querySelector('#agenda tbody');
@@ -205,7 +204,7 @@ function initEvents() {
 
     const searchInput = document.getElementById('search');
     searchInput.addEventListener('input', (e) => {
-        search(e.target.value);
+        Persons.search(e.target.value);
     })
 }
 
